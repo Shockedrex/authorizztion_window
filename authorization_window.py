@@ -11,7 +11,7 @@ class AuthorizationWindow:
         self.root.geometry("400x500")
         self.root.resizable(False, False)
         
-        
+       
         self.setup_data_folder()
         
        
@@ -20,28 +20,28 @@ class AuthorizationWindow:
         
         self.current_user = None
         
-        
+       
         self.create_auth_interface()
     
     def setup_data_folder(self):
+        """Создание папки data в директории программы"""
        
-        
         script_dir = os.path.dirname(os.path.abspath(__file__))
         
-        
+       
         self.data_dir = os.path.join(script_dir, "data")
         
-        
+       
         if not os.path.exists(self.data_dir):
             os.makedirs(self.data_dir)
             print(f"Создана папка для данных: {self.data_dir}")
         
-        
+       
         self.users_file = os.path.join(self.data_dir, "users.json")
         print(f"Файл пользователей: {self.users_file}")
     
     def load_users(self):
-       
+        """Загрузка пользователей из файла"""
         try:
             if os.path.exists(self.users_file):
                 with open(self.users_file, 'r', encoding='utf-8') as f:
@@ -55,7 +55,7 @@ class AuthorizationWindow:
             self.users = {}
     
     def save_users(self):
-       
+        """Сохранение пользователей в файл"""
         try:
             
             if not os.path.exists(self.data_dir):
@@ -73,25 +73,25 @@ class AuthorizationWindow:
             return False
     
     def validate_email(self, email):
-       
+        """Проверка корректности email"""
         pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         return re.match(pattern, email) is not None
     
     def create_auth_interface(self):
-       
+        """Создание интерфейса авторизации"""
         
         for widget in self.root.winfo_children():
             widget.destroy()
         
-        
+       
         tk.Label(self.root, text="Авторизация", font=("Arial", 20, "bold")).pack(pady=20)
         
-        
+       
         tk.Label(self.root, text="Логин:", font=("Arial", 12)).pack(pady=(10, 0))
         self.login_entry = tk.Entry(self.root, font=("Arial", 12), width=30)
         self.login_entry.pack(pady=5)
         
-       
+        
         tk.Label(self.root, text="Пароль:", font=("Arial", 12)).pack(pady=(10, 0))
         self.password_entry = tk.Entry(self.root, font=("Arial", 12), width=30, show="*")
         self.password_entry.pack(pady=5)
@@ -101,7 +101,7 @@ class AuthorizationWindow:
         self.email_entry = tk.Entry(self.root, font=("Arial", 12), width=30)
         self.email_entry.pack(pady=5)
         
-        
+      
         tk.Button(self.root, text="Войти", font=("Arial", 12), 
                  command=self.login, bg="#4CAF50", fg="white", width=20).pack(pady=20)
         
@@ -114,7 +114,7 @@ class AuthorizationWindow:
         path_label.pack(side=tk.BOTTOM, pady=10)
     
     def login(self):
-       
+        """Функция входа в систему"""
         login = self.login_entry.get().strip()
         password = self.password_entry.get()
         email = self.email_entry.get().strip()
@@ -124,7 +124,7 @@ class AuthorizationWindow:
             messagebox.showerror("Ошибка", "Заполните все поля!")
             return
         
-       
+        
         if login in self.users:
             user_data = self.users[login]
             if user_data["password"] == password and user_data["email"] == email:
@@ -137,12 +137,12 @@ class AuthorizationWindow:
             messagebox.showerror("Ошибка", "Пользователь не найден!")
     
     def register(self):
-        
+        """Функция регистрации"""
         login = self.login_entry.get().strip()
         password = self.password_entry.get()
         email = self.email_entry.get().strip()
         
-       
+        
         if not login or not password or not email:
             messagebox.showerror("Ошибка", "Заполните все поля!")
             return
@@ -173,7 +173,7 @@ class AuthorizationWindow:
             "email": email
         }
         
-        
+       
         if self.save_users():
             messagebox.showinfo("Успех", "Регистрация прошла успешно! Теперь вы можете войти.")
            
@@ -185,7 +185,7 @@ class AuthorizationWindow:
             del self.users[login]
     
     def create_personal_page(self):
-       
+        """Создание личной страницы пользователя"""
         
         for widget in self.root.winfo_children():
             widget.destroy()
@@ -207,20 +207,20 @@ class AuthorizationWindow:
         tk.Label(info_frame, text=f"Email: {user_info['email']}", 
                 font=("Arial", 12)).pack(pady=5)
         
-        
+      
         tk.Button(self.root, text="Редактировать профиль", font=("Arial", 12),
                  command=self.edit_profile, bg="#FF9800", fg="white", width=20).pack(pady=10)
         
         tk.Button(self.root, text="Выйти из аккаунта", font=("Arial", 12),
                  command=self.logout, bg="#f44336", fg="white", width=20).pack(pady=5)
         
-        
+       
         path_label = tk.Label(self.root, text=f"Данные сохранены в:\n{self.users_file}", 
                              font=("Arial", 8), fg="gray")
         path_label.pack(side=tk.BOTTOM, pady=10)
     
     def edit_profile(self):
-       
+        """Редактирование профиля"""
         edit_window = tk.Toplevel(self.root)
         edit_window.title("Редактирование профиля")
         edit_window.geometry("350x300")
@@ -229,12 +229,12 @@ class AuthorizationWindow:
         tk.Label(edit_window, text="Редактирование профиля", 
                 font=("Arial", 16, "bold")).pack(pady=20)
         
-        
+       
         tk.Label(edit_window, text="Текущий пароль:", font=("Arial", 12)).pack()
         current_pass = tk.Entry(edit_window, font=("Arial", 12), width=25, show="*")
         current_pass.pack(pady=5)
         
-        
+       
         tk.Label(edit_window, text="Новый пароль:", font=("Arial", 12)).pack()
         new_pass = tk.Entry(edit_window, font=("Arial", 12), width=25, show="*")
         new_pass.pack(pady=5)
@@ -246,14 +246,14 @@ class AuthorizationWindow:
         new_email.pack(pady=5)
         
         def save_changes():
-            
+           
             if current_pass.get() != self.users[self.current_user]["password"]:
                 messagebox.showerror("Ошибка", "Неверный текущий пароль!")
                 return
             
             changes_made = False
             
-            
+           
             if new_pass.get():
                 if len(new_pass.get()) < 4:
                     messagebox.showerror("Ошибка", "Новый пароль должен содержать минимум 4 символа!")
@@ -273,7 +273,7 @@ class AuthorizationWindow:
                 if self.save_users():
                     messagebox.showinfo("Успех", "Профиль успешно обновлен!")
                     edit_window.destroy()
-                    self.create_personal_page()  # Обновляем личную страницу
+                    self.create_personal_page()  
                 else:
                     messagebox.showerror("Ошибка", "Не удалось сохранить изменения!")
             else:
@@ -286,7 +286,7 @@ class AuthorizationWindow:
                  command=edit_window.destroy, bg="#f44336", fg="white", width=20).pack()
     
     def logout(self):
-       
+        """Выход из аккаунта"""
         if messagebox.askyesno("Выход", "Вы уверены, что хотите выйти?"):
             self.current_user = None
             self.create_auth_interface()
