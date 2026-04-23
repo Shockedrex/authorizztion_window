@@ -24,7 +24,7 @@ class AuthorizationWindow:
         self.create_auth_interface()
     
     def setup_data_folder(self):
-        """Создание папки data в директории программы"""
+       
         
         script_dir = os.path.dirname(os.path.abspath(__file__))
         
@@ -41,7 +41,7 @@ class AuthorizationWindow:
         print(f"Файл пользователей: {self.users_file}")
     
     def load_users(self):
-        """Загрузка пользователей из файла"""
+       
         try:
             if os.path.exists(self.users_file):
                 with open(self.users_file, 'r', encoding='utf-8') as f:
@@ -55,7 +55,7 @@ class AuthorizationWindow:
             self.users = {}
     
     def save_users(self):
-        """Сохранение пользователей в файл"""
+       
         try:
             
             if not os.path.exists(self.data_dir):
@@ -73,12 +73,12 @@ class AuthorizationWindow:
             return False
     
     def validate_email(self, email):
-        """Проверка корректности email"""
+       
         pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         return re.match(pattern, email) is not None
     
     def create_auth_interface(self):
-        """Создание интерфейса авторизации"""
+       
         
         for widget in self.root.winfo_children():
             widget.destroy()
@@ -114,7 +114,7 @@ class AuthorizationWindow:
         path_label.pack(side=tk.BOTTOM, pady=10)
     
     def login(self):
-        """Функция входа в систему"""
+       
         login = self.login_entry.get().strip()
         password = self.password_entry.get()
         email = self.email_entry.get().strip()
@@ -137,7 +137,7 @@ class AuthorizationWindow:
             messagebox.showerror("Ошибка", "Пользователь не найден!")
     
     def register(self):
-        """Функция регистрации"""
+        
         login = self.login_entry.get().strip()
         password = self.password_entry.get()
         email = self.email_entry.get().strip()
@@ -176,7 +176,7 @@ class AuthorizationWindow:
         
         if self.save_users():
             messagebox.showinfo("Успех", "Регистрация прошла успешно! Теперь вы можете войти.")
-            # Очищаем поля
+           
             self.login_entry.delete(0, tk.END)
             self.password_entry.delete(0, tk.END)
             self.email_entry.delete(0, tk.END)
@@ -185,7 +185,7 @@ class AuthorizationWindow:
             del self.users[login]
     
     def create_personal_page(self):
-        """Создание личной страницы пользователя"""
+       
         
         for widget in self.root.winfo_children():
             widget.destroy()
@@ -220,7 +220,7 @@ class AuthorizationWindow:
         path_label.pack(side=tk.BOTTOM, pady=10)
     
     def edit_profile(self):
-        """Редактирование профиля"""
+       
         edit_window = tk.Toplevel(self.root)
         edit_window.title("Редактирование профиля")
         edit_window.geometry("350x300")
@@ -286,7 +286,7 @@ class AuthorizationWindow:
                  command=edit_window.destroy, bg="#f44336", fg="white", width=20).pack()
     
     def logout(self):
-        """Выход из аккаунта"""
+       
         if messagebox.askyesno("Выход", "Вы уверены, что хотите выйти?"):
             self.current_user = None
             self.create_auth_interface()
